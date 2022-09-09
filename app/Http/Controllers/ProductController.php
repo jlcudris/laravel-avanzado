@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductoCollection;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except(['index','show']);
+        
+    }
+ 
     public function index()
     {
-        return Product::all();
+        return new ProductoCollection(Product::all());
     }
 
     /**
@@ -38,6 +42,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $product = new ProductResource($product);
         return $product;
     }
 

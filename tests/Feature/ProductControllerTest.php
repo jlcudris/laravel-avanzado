@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class ProductControllerTest extends TestCase
@@ -13,16 +15,21 @@ class ProductControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        Sanctum::actingAs(
+            User::factory()->create()
+        );
     }
 
     public function test_index()
     {
+      //$user =  App\Models\User::create(['name'=>'nombre','email'=>'correo@dominio.com','password'=>Illuminate\Support\Facades\Hash::make('contraseña')]);
+    
         Product::factory(5)->create();
 
         $response = $this->getJson('/api/products');
 
         $response->assertSuccessful();
-       // $response->assertHeader('content-type', 'application/json');
+        $response->assertHeader('content-type', 'application/json');
         $response->assertJsonCount(5);
     }
 
