@@ -4,7 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class CategoryControllerTest extends TestCase
@@ -14,6 +16,9 @@ class CategoryControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        Sanctum::actingAs(
+            User::factory()->create()
+        );
     }
 
     public function test_index()
@@ -24,7 +29,7 @@ class CategoryControllerTest extends TestCase
 
         $response->assertSuccessful();
        // $response->assertHeader('content-type', 'application/json');
-        $response->assertJsonCount(5);
+        $response->assertJsonCount(5,'data');
     }
 
     public function test_create_new_category()
@@ -32,7 +37,7 @@ class CategoryControllerTest extends TestCase
         $data = [
 
             'name' => 'Hola'
-            
+
         ];
         $response = $this->json('POST','/api/categories', $data);
 
@@ -48,7 +53,7 @@ class CategoryControllerTest extends TestCase
 
         $data = [
             'name' => 'Update category'
-            
+
         ];
         //$response = $this->patchJson("/api/products/{$product->getKey()}", $data, [‘content-type’, ‘application/json’]);
        // $response->assertSuccessful();

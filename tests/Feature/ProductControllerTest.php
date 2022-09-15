@@ -23,14 +23,14 @@ class ProductControllerTest extends TestCase
     public function test_index()
     {
       //$user =  App\Models\User::create(['name'=>'nombre','email'=>'correo@dominio.com','password'=>Illuminate\Support\Facades\Hash::make('contraseña')]);
-    
+
         Product::factory(5)->create();
 
         $response = $this->getJson('/api/products');
 
         $response->assertSuccessful();
         $response->assertHeader('content-type', 'application/json');
-        $response->assertJsonCount(5);
+        $response->assertJsonCount(5,'data');
     }
 
     public function test_create_new_product()

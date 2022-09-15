@@ -13,7 +13,8 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->check();
+        //return false;
     }
 
     /**
@@ -24,7 +25,7 @@ class UpdateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>'required'
         ];
     }
 }
